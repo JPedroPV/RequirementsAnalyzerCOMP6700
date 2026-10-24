@@ -1,0 +1,92 @@
+Audit Logs:
+  name: Audit Logs
+  requirements:
+  - Enable logging, per the enterprise’s audit log management process, across enterprise assets.
+Audit Docker Daemon Activities:
+  name: Audit Docker Daemon Activities
+  requirements:
+  - Automated
+Audit Docker Files and Directories:
+  name: Audit Docker Files and Directories
+  requirements:
+  - Automated
+Insecure Registries:
+  name: Insecure Registries
+  requirements:
+  - No insecure registries are in use.
+List every element:
+  name: List every element
+  requirements:
+  - Ensure that all network ports, protocols and services listening on a system with validated business
+    needs, are running on each system.
+  - List all elements in the text
+Docker Server Certificate File:
+  name: Docker Server Certificate File
+  requirements:
+  - Individual owned and group owned by root
+List every element and the requirements for each one:
+  name: List every element and the requirements for each one
+  requirements:
+  - Use only this text.
+  - 'Copy requirements faithfully and keep each one short. List each element once and never repeat a requirement.
+    If the text contains no elements, return {''elements'': []}'''
+  - Container Runtime Configuration
+Memory:
+  name: Memory
+  requirements:
+  - 256MB
+Elements:
+  name: Elements
+  requirements:
+  - List every element
+Host Configuration:
+  name: Host Configuration
+  requirements:
+  - Ensure a separate partition for containers has been created (Manual)
+Ensure auditing is configured for the Docker daemon:
+  name: Ensure auditing is configured for the Docker daemon
+  requirements:
+  - Ensure auditing is configured for the Docker daemon
+Ensure auditing is configured for Docker files and directories - /run/containerd:
+  name: Ensure auditing is configured for Docker files and directories - /run/containerd
+  requirements:
+  - Ensure auditing is configured for Docker files and directories - /run/containerd
+Ensure auditing is configured for Docker files and directories - /usr/bin/containerd:
+  name: Ensure auditing is configured for Docker files and directories - /usr/bin/containerd
+  requirements:
+  - Ensure auditing is configured for Docker files and directories - /usr/bin/containerd
+Ensure auditing is configured for Docker files and directories - /usr/bin/containerd-shim:
+  name: Ensure auditing is configured for Docker files and directories - /usr/bin/containerd-shim
+  requirements:
+  - Ensure auditing is configured for Docker files and directories - /usr/bin/containerd-shim
+Ensure auditing is configured for Docker files and directories - /usr/bin/containerd-shim-runc-v1:
+  name: Ensure auditing is configured for Docker files and directories - /usr/bin/containerd-shim-runc-v1
+  requirements:
+  - Ensure auditing is configured for Docker files and directories - /usr/bin/containerd-shim-runc-v1
+Ensure auditing is configured for Docker files and directories - /usr/bin/containerd-shim-runc-v2:
+  name: Ensure auditing is configured for Docker files and directories - /usr/bin/containerd-shim-runc-v2
+  requirements:
+  - Ensure auditing is configured for Docker files and directories - /usr/bin/containerd-shim-runc-v2
+Ensure auditing is configured for Docker files and directories - /usr/bin/runc:
+  name: Ensure auditing is configured for Docker files and directories - /usr/bin/runc
+  requirements:
+  - Ensure auditing is configured for Docker files and directories - /usr/bin/runc
+Set Correctly:
+  name: Set Correctly
+  requirements:
+  - 'Yes'
+Ensure setuid and setgid permissions are removed:
+  name: Ensure setuid and setgid permissions are removed
+  requirements: []
+Ensure privileged ports are not mapped within containers:
+  name: Ensure privileged ports are not mapped within containers
+  requirements: []
+Ensure all signed artifacts are validated:
+  name: Ensure all signed artifacts are validated
+  requirements: []
+Ensure that COPY is used instead of ADD in Dockerfiles:
+  name: Ensure that COPY is used instead of ADD in Dockerfiles
+  requirements: []
+Ensure all updated instructions are not used alone in Dockerfiles:
+  name: Ensure all updated instructions are not used alone in Dockerfiles
+  requirements: []

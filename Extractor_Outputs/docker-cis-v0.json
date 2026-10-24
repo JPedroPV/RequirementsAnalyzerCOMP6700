@@ -1,0 +1,70 @@
+{
+  "Audit Docker Socket": {
+    "name": "Audit Docker Socket",
+    "requirements": [
+      "Check if docker.socket exists",
+      "Verify audit rule for docker.socket"
+    ]
+  },
+  "List every element and the requirements for each one": {
+    "name": "List every element and the requirements for each one",
+    "requirements": [
+      "Task: List every element and the requirements for each one",
+      "copy all elements from the text"
+    ]
+  },
+  "Docker Daemon Configuration": {
+    "name": "Docker Daemon Configuration",
+    "requirements": [
+      "Ensure Docker daemon is up to date",
+      "Use standard hardening configuration templates for application infrastructure",
+      "Establish and maintain a secure configuration process"
+    ]
+  },
+  "Docker Daemon": {
+    "name": "Docker Daemon",
+    "requirements": [
+      "root",
+      "docker.service",
+      "docker.socket",
+      "docker.socket-option"
+    ]
+  },
+  "Docker Socket": {
+    "name": "Docker Socket",
+    "requirements": [
+      "660"
+    ]
+  },
+  "Docker Build": {
+    "name": "Docker Build",
+    "requirements": [
+      "use only this text"
+    ]
+  },
+  "SSH Daemon": {
+    "name": "SSH Daemon",
+    "requirements": [
+      "running"
+    ]
+  },
+  "Container Shell Access": {
+    "name": "Container Shell Access",
+    "requirements": [
+      "no SSH daemon running"
+    ]
+  },
+  "List every element": {
+    "name": "List every element",
+    "requirements": [
+      "Provide a list of all elements in the text.",
+      "List all elements in the text"
+    ]
+  },
+  "Ensure that docker exec commands are not used with the privileged option": {
+    "name": "Ensure that docker exec commands are not used with the privileged option",
+    "requirements": [
+      "Yes"
+    ]
+  }
+}
