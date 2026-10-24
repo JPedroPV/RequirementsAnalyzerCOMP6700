@@ -1,0 +1,7 @@
+Requirements only in ./Extractor_Outputs/test_v0_v1_diff.yaml:
+- Element One,req2
+- Element Two,req6
+
+Requirements only in ./Extractor_Outputs/test_v1_v2_diff.yaml:
+- Element One,req20
+- Element Two,req60
