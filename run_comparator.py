@@ -1,3 +1,4 @@
+"""Runs the comparator on specified YAML files and outputs the differences, alternatively you can run python comparator.py directly with the appropriate arguments."""
 import comparator
 
 comparator.main("./Extractor_Outputs/test_v0_v1_diff.yaml", "./Extractor_Outputs/test_v1_v2_diff.yaml", "./Comparator_Outputs/test_v0_v1_name_differences.txt", "./Comparator_Outputs/test_v0_v1_requirements_differences.txt")

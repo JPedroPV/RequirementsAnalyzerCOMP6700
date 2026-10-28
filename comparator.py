@@ -1,3 +1,4 @@
+"""Compares element names and requirements between two YAML files and writes the differences to output files."""
 from pathlib import Path
 
 import sys
