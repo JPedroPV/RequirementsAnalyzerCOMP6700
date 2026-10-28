@@ -1,0 +1,31 @@
+Element names only in ./Extractor_Outputs/docker-cis-v0.yaml:
+- Audit Docker Socket
+- Container Shell Access
+- Docker Build
+- Docker Daemon
+- Docker Daemon Configuration
+- Docker Socket
+- SSH Daemon
+
+Element names only in ./Extractor_Outputs/docker-cis-v1.yaml:
+- Audit Docker Daemon Activities
+- Audit Docker Files and Directories
+- Audit Logs
+- Docker Server Certificate File
+- Elements
+- Ensure all signed artifacts are validated
+- Ensure all updated instructions are not used alone in Dockerfiles
+- Ensure auditing is configured for Docker files and directories - /run/containerd
+- Ensure auditing is configured for Docker files and directories - /usr/bin/containerd
+- Ensure auditing is configured for Docker files and directories - /usr/bin/containerd-shim
+- Ensure auditing is configured for Docker files and directories - /usr/bin/containerd-shim-runc-v1
+- Ensure auditing is configured for Docker files and directories - /usr/bin/containerd-shim-runc-v2
+- Ensure auditing is configured for Docker files and directories - /usr/bin/runc
+- Ensure auditing is configured for the Docker daemon
+- Ensure privileged ports are not mapped within containers
+- Ensure setuid and setgid permissions are removed
+- Ensure that COPY is used instead of ADD in Dockerfiles
+- Host Configuration
+- Insecure Registries
+- Memory
+- Set Correctly

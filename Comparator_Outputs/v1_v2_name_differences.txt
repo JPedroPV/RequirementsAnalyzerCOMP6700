@@ -1,0 +1,40 @@
+Element names only in ./Extractor_Outputs/docker-cis-v1.yaml:
+- Audit Docker Daemon Activities
+- Audit Docker Files and Directories
+- Audit Logs
+- Docker Server Certificate File
+- Elements
+- Ensure all signed artifacts are validated
+- Ensure all updated instructions are not used alone in Dockerfiles
+- Ensure auditing is configured for Docker files and directories - /run/containerd
+- Ensure auditing is configured for Docker files and directories - /usr/bin/containerd
+- Ensure auditing is configured for Docker files and directories - /usr/bin/containerd-shim
+- Ensure auditing is configured for Docker files and directories - /usr/bin/containerd-shim-runc-v1
+- Ensure auditing is configured for Docker files and directories - /usr/bin/containerd-shim-runc-v2
+- Ensure auditing is configured for Docker files and directories - /usr/bin/runc
+- Ensure auditing is configured for the Docker daemon
+- Ensure privileged ports are not mapped within containers
+- Ensure setuid and setgid permissions are removed
+- Ensure that COPY is used instead of ADD in Dockerfiles
+- Host Configuration
+- Insecure Registries
+- List every element
+- List every element and the requirements for each one
+- Memory
+- Set Correctly
+
+Element names only in ./Extractor_Outputs/docker-cis-v2.yaml:
+- Administrative Privileges
+- Audit Docker Daemon
+- Auditing
+- Daemon.json File
+- Docker Daemon
+- Docker Server Socket
+- Encryption
+- Ensure that node certificates are rotated as appropriate (Manual)
+- Ensure that swarm manager auto-lock key is rotated periodically (Manual)
+- Linux Hosts Specific Configuration
+- SCAP-compliant vulnerability scanning tool
+- SSH Daemon
+- authorization-plugin
+- list every element

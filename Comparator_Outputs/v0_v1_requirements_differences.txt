@@ -1,0 +1,39 @@
+Requirements only in ./Extractor_Outputs/docker-cis-v0.yaml:
+- Audit Docker Socket,Check if docker.socket exists
+- Audit Docker Socket,Verify audit rule for docker.socket
+- Container Shell Access,no SSH daemon running
+- Docker Build,use only this text
+- Docker Daemon Configuration,Ensure Docker daemon is up to date
+- Docker Daemon Configuration,Establish and maintain a secure configuration process
+- Docker Daemon Configuration,Use standard hardening configuration templates for application infrastructure
+- Docker Daemon,docker.service
+- Docker Daemon,docker.socket
+- Docker Daemon,docker.socket-option
+- Docker Daemon,root
+- Docker Socket,660
+- List every element and the requirements for each one,Task: List every element and the requirements for each one
+- List every element and the requirements for each one,copy all elements from the text
+- List every element,Provide a list of all elements in the text.
+- SSH Daemon,running
+
+Requirements only in ./Extractor_Outputs/docker-cis-v1.yaml:
+- Audit Docker Daemon Activities,Automated
+- Audit Docker Files and Directories,Automated
+- Audit Logs,Enable logging, per the enterprise’s audit log management process, across enterprise assets.
+- Docker Server Certificate File,Individual owned and group owned by root
+- Elements,List every element
+- Ensure auditing is configured for Docker files and directories - /run/containerd,Ensure auditing is configured for Docker files and directories - /run/containerd
+- Ensure auditing is configured for Docker files and directories - /usr/bin/containerd,Ensure auditing is configured for Docker files and directories - /usr/bin/containerd
+- Ensure auditing is configured for Docker files and directories - /usr/bin/containerd-shim,Ensure auditing is configured for Docker files and directories - /usr/bin/containerd-shim
+- Ensure auditing is configured for Docker files and directories - /usr/bin/containerd-shim-runc-v1,Ensure auditing is configured for Docker files and directories - /usr/bin/containerd-shim-runc-v1
+- Ensure auditing is configured for Docker files and directories - /usr/bin/containerd-shim-runc-v2,Ensure auditing is configured for Docker files and directories - /usr/bin/containerd-shim-runc-v2
+- Ensure auditing is configured for Docker files and directories - /usr/bin/runc,Ensure auditing is configured for Docker files and directories - /usr/bin/runc
+- Ensure auditing is configured for the Docker daemon,Ensure auditing is configured for the Docker daemon
+- Host Configuration,Ensure a separate partition for containers has been created (Manual)
+- Insecure Registries,No insecure registries are in use.
+- List every element and the requirements for each one,Container Runtime Configuration
+- List every element and the requirements for each one,Copy requirements faithfully and keep each one short. List each element once and never repeat a requirement. If the text contains no elements, return {'elements': []}'
+- List every element and the requirements for each one,Use only this text.
+- List every element,Ensure that all network ports, protocols and services listening on a system with validated business needs, are running on each system.
+- Memory,256MB
+- Set Correctly,Yes

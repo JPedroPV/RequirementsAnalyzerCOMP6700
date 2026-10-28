@@ -1,0 +1,49 @@
+Requirements only in ./Extractor_Outputs/docker-cis-v1.yaml:
+- Audit Docker Daemon Activities,Automated
+- Audit Docker Files and Directories,Automated
+- Audit Logs,Enable logging, per the enterprise’s audit log management process, across enterprise assets.
+- Docker Server Certificate File,Individual owned and group owned by root
+- Elements,List every element
+- Ensure auditing is configured for Docker files and directories - /run/containerd,Ensure auditing is configured for Docker files and directories - /run/containerd
+- Ensure auditing is configured for Docker files and directories - /usr/bin/containerd,Ensure auditing is configured for Docker files and directories - /usr/bin/containerd
+- Ensure auditing is configured for Docker files and directories - /usr/bin/containerd-shim,Ensure auditing is configured for Docker files and directories - /usr/bin/containerd-shim
+- Ensure auditing is configured for Docker files and directories - /usr/bin/containerd-shim-runc-v1,Ensure auditing is configured for Docker files and directories - /usr/bin/containerd-shim-runc-v1
+- Ensure auditing is configured for Docker files and directories - /usr/bin/containerd-shim-runc-v2,Ensure auditing is configured for Docker files and directories - /usr/bin/containerd-shim-runc-v2
+- Ensure auditing is configured for Docker files and directories - /usr/bin/runc,Ensure auditing is configured for Docker files and directories - /usr/bin/runc
+- Ensure auditing is configured for the Docker daemon,Ensure auditing is configured for the Docker daemon
+- Host Configuration,Ensure a separate partition for containers has been created (Manual)
+- Insecure Registries,No insecure registries are in use.
+- List every element and the requirements for each one,Container Runtime Configuration
+- List every element and the requirements for each one,Copy requirements faithfully and keep each one short. List each element once and never repeat a requirement. If the text contains no elements, return {'elements': []}'
+- List every element and the requirements for each one,Use only this text.
+- List every element,Ensure that all network ports, protocols and services listening on a system with validated business needs, are running on each system.
+- List every element,List all elements in the text
+- Memory,256MB
+- Set Correctly,Yes
+
+Requirements only in ./Extractor_Outputs/docker-cis-v2.yaml:
+- Administrative Privileges,List every element and the requirements for each one
+- Audit Docker Daemon,Docker daemon behavior depends on key files and directories
+- Audit Docker Daemon,root privileges
+- Auditing,configure TLS CA certificate
+- Auditing,configure for Docker daemon
+- Auditing,configure logging level
+- Auditing,configure registry certificate file
+- Daemon.json File,docker
+- Daemon.json File,root
+- Docker Daemon,docker.service
+- Docker Daemon,docker.socket
+- Docker Daemon,root
+- Docker Server Socket,docker
+- Docker Server Socket,root
+- Encryption,Encrypt sensitive data at rest
+- Ensure that node certificates are rotated as appropriate (Manual),Ensure that node certificates are rotated as appropriate (Manual)
+- Ensure that swarm manager auto-lock key is rotated periodically (Manual),Ensure that swarm manager auto-lock key is rotated periodically (Manual)
+- Linux Hosts Specific Configuration,Ensure a separate partition for containers has been created (Manual)
+- SCAP-compliant vulnerability scanning tool,list every element and the requirements for each one
+- SSH Daemon,Disable SSH daemon in container
+- authorization-plugin,configure authorization policy
+- authorization-plugin,install/create authorization plugin
+- authorization-plugin,start docker daemon
+- list every element,List all elements in the text
+- list every element,List all elements present in the text
