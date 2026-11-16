@@ -1,0 +1,28 @@
+Docker Socket File (/var/run/docker.sock):
+  name: Docker Socket File (/var/run/docker.sock)
+  requirements:
+  - Audit docker.sock, if applicable.
+Docker Daemon Networking:
+  name: Docker Daemon Networking
+  requirements:
+  - 'Restrict network traffic between containers on the default bridge ("icc": false)'
+Container Resources:
+  name: Container Resources
+  requirements:
+  - Limit container memory usage (--memory).
+Internal Only - General:
+  name: Internal Only - General
+  requirements:
+  - Ensure that the memory usage for containers is limited (Manual).
+CIS Controls:
+  name: CIS Controls
+  requirements:
+  - Restrict administrator privileges to dedicated administrator accounts on enterprise assets.
+Container Volume Mounts:
+  name: Container Volume Mounts
+  requirements:
+  - Do not set mount propagation mode if needed
+Docker Socket File:
+  name: Docker Socket File
+  requirements:
+  - Do not mount docker.sock inside any container.

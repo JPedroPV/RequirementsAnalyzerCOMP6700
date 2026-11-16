@@ -1,0 +1,81 @@
+Configure Data Access Control Lists:
+  name: Configure Data Access Control Lists
+  requirements:
+  - Apply data access control lists based on a user’s need to know.
+  - Implement data access control lists (ACLs) to local and remote file systems, databases, and applications.
+Ensure that the daemon.json file ownership is set to root:root:
+  name: Ensure that the daemon.json file ownership is set to root:root
+  requirements:
+  - Verify that the daemon.json file individual ownership and group ownership is correctly set to root.
+  - Set the ownership and group ownership for this file to root.
+Ensure that the host's IPC namespace is not shared:
+  name: Ensure that the host's IPC namespace is not shared
+  requirements:
+  - Do not directly expose host devices to containers
+  - Share specific host processes using the -p switch
+  - Use granular permissions as appropriate to your organization.
+Enable anti-exploitation features:
+  name: Enable anti-exploitation features
+  requirements:
+  - 'Control 1: Enable anti-exploitations features on enterprise assets and software'
+  - 'Control 2: Control Anti-Exploitation Features on Enterprise Assets and Software'
+Ensure daemon.json file ownership is set to root:root:
+  name: Ensure daemon.json file ownership is set to root:root
+  requirements:
+  - Set daemon.json file ownership to root:root
+Ensure daemon.json file permissions are set to 644 or more restrictive:
+  name: Ensure daemon.json file permissions are set to 644 or more restrictive
+  requirements:
+  - Set daemon.json file permissions are set to 644 or more restrictive
+Ensure that COPY is used instead of ADD in Dockerfiles:
+  name: Ensure that COPY is used instead of ADD in Dockerfiles
+  requirements:
+  - Use 'COPY' instead of 'ADD' in Dockerfiles
+Ensure auditing is configured for the Docker daemon:
+  name: Ensure auditing is configured for the Docker daemon
+  requirements:
+  - Configure auditing for the Docker daemon
+Ensure auditing is configured for Docker files and directories - /run/containerd:
+  name: Ensure auditing is configured for Docker files and directories - /run/containerd
+  requirements:
+  - Configure auditing for Docker files and directories - /run/containerd
+Ensure auditing is configured for Docker files and directories - /var/lib/docker:
+  name: Ensure auditing is configured for Docker files and directories - /var/lib/docker
+  requirements:
+  - Configure auditing for Docker files and directories - /var/lib/docker
+Ensure auditing is configured for Docker files and directories - /etc/docker:
+  name: Ensure auditing is configured for Docker files and directories - /etc/docker
+  requirements:
+  - Configure auditing for Docker files and directories - /etc/docker
+Ensure auditing is configured for Docker files and directories - docker.service:
+  name: Ensure auditing is configured for Docker files and directories - docker.service
+  requirements:
+  - Configure auditing for Docker files and directories - docker.service
+Ensure that swarm manager auto-lock key is rotated periodically:
+  name: Ensure that swarm manager auto-lock key is rotated periodically
+  requirements:
+  - Rotate the swarm manager auto-lock key periodically
+Ensure that container health is checked at runtime:
+  name: Ensure that container health is checked at runtime
+  requirements:
+  - Check container health at runtime
+Ensure that management plane traffic is separated from data plane traffic:
+  name: Ensure that management plane traffic is separated from data plane traffic
+  requirements:
+  - Separate management plane traffic from data plane traffic
+Ensure that, if applicable, an AppArmor Profile is enabled:
+  name: Ensure that, if applicable, an AppArmor Profile is enabled
+  requirements:
+  - Enable AppArmor profile
+Ensure that, if applicable, SELinux security options are set:
+  name: Ensure that, if applicable, SELinux security options are set
+  requirements:
+  - Set SELinux security options
+Ensure that Linux kernel capabilities are restricted within containers:
+  name: Ensure that Linux kernel capabilities are restricted within containers
+  requirements:
+  - Restrict Linux kernel capabilities within containers
+Ensure that privileged containers are not used:
+  name: Ensure that privileged containers are not used
+  requirements:
+  - Do not use privileged containers

@@ -1,0 +1,72 @@
+Docker Host Hardened:
+  name: Docker Host Hardened
+  requirements:
+  - Hardening the host OS
+Docker Version Up to Date:
+  name: Docker Version Up to Date
+  requirements:
+  - Keeping Docker version up to date
+systemctl restart auditd:
+  name: systemctl restart auditd
+  requirements:
+  - Audit /etc/sysconfig/docker if applicable
+docker version:
+  name: docker version
+  requirements:
+  - Verify there is an audit rule related to the /etc/sysconfig/docker file
+CIS Controls:
+  name: CIS Controls
+  requirements:
+  - Controls
+Version:
+  name: Version
+  requirements:
+  - v8
+Page 183:
+  name: Page 183
+  requirements:
+  - Ensure that the host's process namespace is not shared
+Page 184:
+  name: Page 184
+  requirements:
+  - Ensure that the host's process namespace is not shared
+Page 185:
+  name: Page 185
+  requirements:
+  - Ensure that the host's process namespace is not shared
+Page 186:
+  name: Page 186
+  requirements:
+  - Ensure that the host's process namespace is not shared
+Page 187:
+  name: Page 187
+  requirements:
+  - Ensure that the host's process namespace is not shared
+Page 188:
+  name: Page 188
+  requirements:
+  - Ensure that the host's process namespace is not shared
+Page 190:
+  name: Page 190
+  requirements:
+  - Ensure that the host's process namespace is not shared
+Page 191:
+  name: Page 191
+  requirements:
+  - Ensure that the host's process namespace is not shared
+Page 192:
+  name: Page 192
+  requirements:
+  - Ensure that the host's process namespace is not shared
+Host Namespaces:
+  name: Host Namespaces
+  requirements:
+  - IPC (POSIX/SysV IPC) namespace provides separation of named shared memory segments, semaphores and
+    message queues. The IPC namespace on the host should therefore not be shared with containers.
+Docker Swarm:
+  name: Docker Swarm
+  requirements:
+  - Ensure that swarm manager auto-lock key is rotated periodically
+Swarm Networking:
+  name: Swarm Networking
+  requirements: []

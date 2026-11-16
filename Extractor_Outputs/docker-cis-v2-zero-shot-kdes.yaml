@@ -1,0 +1,67 @@
+Linux Hosts Specific Configuration:
+  name: Linux Hosts Specific Configuration
+  requirements:
+  - Ensure a separate partition for containers has been created (Manual)
+Audit Docker Daemon:
+  name: Audit Docker Daemon
+  requirements:
+  - root privileges
+  - Docker daemon behavior depends on key files and directories
+Administrative Privileges:
+  name: Administrative Privileges
+  requirements:
+  - List every element and the requirements for each one
+authorization-plugin:
+  name: authorization-plugin
+  requirements:
+  - install/create authorization plugin
+  - configure authorization policy
+  - start docker daemon
+Docker Daemon:
+  name: Docker Daemon
+  requirements:
+  - root
+  - docker.service
+  - docker.socket
+Docker Server Socket:
+  name: Docker Server Socket
+  requirements:
+  - root
+  - docker
+Daemon.json File:
+  name: Daemon.json File
+  requirements:
+  - root
+  - docker
+list every element:
+  name: list every element
+  requirements:
+  - List all elements in the text
+  - List all elements present in the text
+SSH Daemon:
+  name: SSH Daemon
+  requirements:
+  - Disable SSH daemon in container
+SCAP-compliant vulnerability scanning tool:
+  name: SCAP-compliant vulnerability scanning tool
+  requirements:
+  - list every element and the requirements for each one
+Encryption:
+  name: Encryption
+  requirements:
+  - Encrypt sensitive data at rest
+Ensure that swarm manager auto-lock key is rotated periodically (Manual):
+  name: Ensure that swarm manager auto-lock key is rotated periodically (Manual)
+  requirements:
+  - Ensure that swarm manager auto-lock key is rotated periodically (Manual)
+Ensure that node certificates are rotated as appropriate (Manual):
+  name: Ensure that node certificates are rotated as appropriate (Manual)
+  requirements:
+  - Ensure that node certificates are rotated as appropriate (Manual)
+Auditing:
+  name: Auditing
+  requirements:
+  - configure for Docker daemon
+  - configure logging level
+  - configure TLS CA certificate
+  - configure registry certificate file

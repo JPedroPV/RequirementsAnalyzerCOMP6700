@@ -40,7 +40,7 @@ Output (printed and saved to OUTPUT_DIR/<pdf name>-<prompt type>-kdes.yaml):
       ...
     }
 """
-import argparse, json, yaml, sys
+import argparse, json, math, re, yaml, sys
 import multiprocessing as mp
 from pathlib import Path
 
@@ -59,7 +59,9 @@ FILE = "*BF16.gguf"
 ANSWER_TOKENS = 4000
 CHUNK_TOKENS = 8000
 CHUNK_OVERLAP = 800
+EXAMPLE_CHUNK_TOKENS = 2000  # one-shot example chunks: a few recommendations, not 8k tokens' worth
 N_CTX = 16384         # per worker: one chunk + prompt + answer fits easily
+ONE_SHOT_N_CTX = 32768  # one-shot also carries an example chunk + its answer (Gemma 3 1B max)
 WORKERS = 5           # model copies on the GPU (~3-4 GB each); tune by watching nvidia-smi
 MAX_RETRIES = 5       # attempts per chunk before giving up on it
 # ================================================================
@@ -170,6 +172,42 @@ def load_example(pdf_path, yaml_path):
     return text, {"elements": elements}
 
 
+_WORD = re.compile(r"[a-z0-9][a-z0-9_./:=+-]*[a-z0-9]")
+
+
+def _words(s):
+    return {w for w in _WORD.findall(s.lower()) if len(w) >= 4}
+
+
+def assign_example_elements(chunks, elements):
+    """Give each example requirement to the example chunk whose text matches it best.
+
+    The example YAML covers the whole example PDF, but each prompt only shows one chunk of
+    it, so the example answer must only contain what that chunk covers. A requirement is
+    scored against each chunk by the IDF-weighted share of its words found there (words
+    found in every chunk count for little) and goes to the highest-scoring chunk.
+    Returns one {"elements": [...]} per chunk.
+    """
+    chunk_words = [_words(c) for c in chunks]
+    n = len(chunks)
+    df = {}
+    for ws in chunk_words:
+        for w in ws:
+            df[w] = df.get(w, 0) + 1
+    idf = lambda w: math.log((n + 1) / (df.get(w, 0) + 0.5))
+
+    per_chunk = [{} for _ in chunks]  # element name -> requirements, in YAML order
+    for el in elements:
+        for req in el["requirements"]:
+            words = _words(f"{el['name']} {req}")
+            total = sum(idf(w) for w in words) or 1.0
+            scores = [sum(idf(w) for w in words if w in cw) / total for cw in chunk_words]
+            best = max(range(n), key=scores.__getitem__)
+            per_chunk[best].setdefault(el["name"], []).append(req)
+    return [{"elements": [{"name": k, "requirements": v} for k, v in pc.items()]}
+            for pc in per_chunk]
+
+
 def build_one_shot_prompt(chunk, example_text=EXAMPLE_TEXT, example_output=EXAMPLE_OUTPUT):
     """Instructions plus one worked example showing the expected element/requirement split."""
     return (
@@ -211,16 +249,14 @@ PROMPT_BUILDERS = {
 # --------------------------- worker side ---------------------------
 _llm = None          # one model per worker process
 _prompt_type = None  # set per worker: globals aren't inherited under "spawn"
-_prompt_kwargs = {}  # extra builder arguments (the one-shot example)
 
 
-def init_worker(model_path, prompt_type, prompt_kwargs):
-    global _llm, _prompt_type, _prompt_kwargs
+def init_worker(model_path, prompt_type, n_ctx):
+    global _llm, _prompt_type
     _prompt_type = prompt_type
-    _prompt_kwargs = prompt_kwargs
     _llm = Llama(
         model_path=model_path,
-        n_ctx=N_CTX,
+        n_ctx=n_ctx,
         n_gpu_layers=-1,
         flash_attn=True,
         n_batch=2048,
@@ -229,9 +265,9 @@ def init_worker(model_path, prompt_type, prompt_kwargs):
     )
 
 
-def _ask(chunk, log):
+def _ask(chunk, prompt_kwargs, log):
     """One model call. Appends {"prompt", "output"} to `log` so every call can be dumped later."""
-    prompt = PROMPT_BUILDERS[_prompt_type](chunk, **_prompt_kwargs)
+    prompt = PROMPT_BUILDERS[_prompt_type](chunk, **prompt_kwargs)
     schema = COT_SCHEMA if _prompt_type == "chain-of-thought" else SCHEMA
     r = _llm.create_chat_completion(
         messages=[{"role": "user", "content": prompt}],
@@ -245,9 +281,9 @@ def _ask(chunk, log):
     return choice["message"]["content"], choice["finish_reason"]
 
 
-def _extract(chunk, idx, log, depth=0):
+def _extract(chunk, idx, prompt_kwargs, log, depth=0):
     for attempt in range(1, MAX_RETRIES + 1):
-        content, reason = _ask(chunk, log)
+        content, reason = _ask(chunk, prompt_kwargs, log)
         try:
             return json.loads(content).get("elements", [])
         except json.JSONDecodeError:
@@ -256,16 +292,17 @@ def _extract(chunk, idx, log, depth=0):
             if reason == "length" and depth < 3 and len(chunk) > 2000:
                 # Too much to say for one reply: split at a line break near the middle.
                 mid = chunk.rfind("\n", 0, len(chunk) // 2) or len(chunk) // 2
-                return (_extract(chunk[:mid], idx, log, depth + 1)
-                        + _extract(chunk[mid:], idx, log, depth + 1))
+                return (_extract(chunk[:mid], idx, prompt_kwargs, log, depth + 1)
+                        + _extract(chunk[mid:], idx, prompt_kwargs, log, depth + 1))
     print(f"Error: chunk {idx + 1} skipped after {MAX_RETRIES} attempts.", file=sys.stderr)
     return []
 
 
 def extract_elements(job):
-    idx, chunk = job
+    """job = (chunk index, chunk text, extra prompt-builder arguments for this chunk)."""
+    idx, chunk, prompt_kwargs = job
     log = []
-    return idx, _extract(chunk, idx, log), log
+    return idx, _extract(chunk, idx, prompt_kwargs, log), log
 
 
 # ---------------------------- main side ----------------------------
@@ -351,28 +388,36 @@ def main():
     args = parse_args()
     pdf_path, prompt_type = args.pdf, args.prompt
 
-    prompt_kwargs = {}
+    # Tokenizer only (no weights on the GPU): downloads the file once and gives its path.
+    tok = Llama.from_pretrained(repo_id=REPO, filename=FILE, vocab_only=True, verbose=False)
+    model_path = tok.model_path
+    n_tokens = lambda s: len(tok.tokenize(s.encode("utf-8"), add_bos=False))
+
+    # One-shot with an example PDF: chunk the example the same way as the document and
+    # give each example chunk only the part of the example YAML it covers.
+    example_kwargs = [{}]  # per example chunk; [{}] = builder defaults
     if args.example_pdf:
         try:
             ex_text, ex_output = load_example(args.example_pdf, args.example_yaml)
         except ValueError as err:
             sys.exit(f"Error: {err}")
-        prompt_kwargs = {"example_text": ex_text, "example_output": ex_output}
-        print(f"One-shot example: {args.example_pdf} -> {args.example_yaml}", file=sys.stderr)
-
-    # Tokenizer only (no weights on the GPU): downloads the file once and gives its path.
-    tok = Llama.from_pretrained(repo_id=REPO, filename=FILE, vocab_only=True, verbose=False)
-    model_path = tok.model_path
+        ex_chunks = ([ex_text] if n_tokens(ex_text) <= EXAMPLE_CHUNK_TOKENS
+                     else split_text(tok, ex_text, EXAMPLE_CHUNK_TOKENS))
+        ex_answers = assign_example_elements(ex_chunks, ex_output["elements"])
+        example_kwargs = [{"example_text": c, "example_output": a}
+                          for c, a in zip(ex_chunks, ex_answers)]
+        print(f"One-shot example: {args.example_pdf} -> {args.example_yaml} "
+              f"({len(ex_chunks)} chunk(s))", file=sys.stderr)
 
     # Whatever the prompt adds besides the chunk (instructions, example) eats into the
     # chunk's share of the context, so shrink chunks when the one-shot example is large.
-    n_tokens = lambda s: len(tok.tokenize(s.encode("utf-8"), add_bos=False))
+    n_ctx = ONE_SHOT_N_CTX if prompt_type == "one-shot" else N_CTX
     builder = PROMPT_BUILDERS[prompt_type]
-    overhead = n_tokens(builder("", **prompt_kwargs)) + 200  # + chat template / safety margin
-    chunk_tokens = min(CHUNK_TOKENS, N_CTX - ANSWER_TOKENS - overhead)
+    overhead = max(n_tokens(builder("", **kw)) for kw in example_kwargs) + 200  # + chat template
+    chunk_tokens = min(CHUNK_TOKENS, n_ctx - ANSWER_TOKENS - overhead)
     if chunk_tokens < 1000:
         sys.exit(f"Error: the prompt without the document is ~{overhead:,} tokens, leaving no "
-                 f"room for document text in N_CTX={N_CTX:,}. Use a shorter example PDF.")
+                 f"room for document text in n_ctx={n_ctx:,}. Use a shorter example PDF.")
     if chunk_tokens < CHUNK_TOKENS:
         print(f"Example is large: chunks reduced to {chunk_tokens:,} tokens.", file=sys.stderr)
 
@@ -387,11 +432,17 @@ def main():
     workers = min(WORKERS, len(chunks))
     print(f"{len(chunks)} chunk(s) across {workers} worker(s).", file=sys.stderr)
 
+    # Pair each document chunk with the example chunk at the same relative position, so
+    # similar sections of two versions of a document line up.
+    n_ex = len(example_kwargs)
+    pick = lambda i: example_kwargs[round(i * (n_ex - 1) / max(len(chunks) - 1, 1))]
+    jobs = [(i, c, pick(i)) for i, c in enumerate(chunks)]
+
     # "spawn" is required: CUDA can't be shared with forked child processes.
     ctx = mp.get_context("spawn")
     results, logs = {}, {}
-    with ctx.Pool(workers, initializer=init_worker, initargs=(model_path, prompt_type, prompt_kwargs)) as pool:
-        for idx, elements, log in pool.imap_unordered(extract_elements, enumerate(chunks)):
+    with ctx.Pool(workers, initializer=init_worker, initargs=(model_path, prompt_type, n_ctx)) as pool:
+        for idx, elements, log in pool.imap_unordered(extract_elements, jobs):
             results[idx], logs[idx] = elements, log
             print(f"Finished {len(results)}/{len(chunks)} (chunk {idx + 1})", file=sys.stderr)
 

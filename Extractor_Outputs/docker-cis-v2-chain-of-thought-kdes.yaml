@@ -1,0 +1,127 @@
+Run Docker Daemon as Non-Root User:
+  name: Run Docker Daemon as Non-Root User
+  requirements:
+  - Manual
+  - Configure --iptables=false
+Ensure Network Traffic is Restricted Between Containers on Default Bridge:
+  name: Ensure Network Traffic is Restricted Between Containers on Default Bridge
+  requirements:
+  - Restrict inter-container communication
+Set TLS Authentication for Docker Daemon:
+  name: Set TLS Authentication for Docker Daemon
+  requirements:
+  - Enable TLS authentication
+Manage Access Control for Remote Assets:
+  name: Manage Access Control for Remote Assets
+  requirements:
+  - Use standard hardening configuration templates
+Use Standard Hardening Configurations Templates:
+  name: Use Standard Hardening Configurations Templates
+  requirements:
+  - Ensure that only currently supported software is designated as authorized in the software inventory
+    for enterprise assets. Whilst these permissions can be legitimately needed, you should consider removing
+    them from packages which do not need them.
+  - Do not allow in-house developed software to weaken configuration hardening.
+Maintain Secure Images:
+  name: Maintain Secure Images
+  requirements:
+  - Apply static and dynamic analysis tools within the application life cycle to verify that secure coding
+    practices are being followed.
+Resource and become unresponsive:
+  name: Resource and become unresponsive
+  requirements:
+  - If CPU resources on the host are not constrained, CPU shares do not place any restrictions on individual
+    resources
+Audit:
+  name: Audit
+  requirements:
+  - 'You should run the following command. docker ps --quiet --all | xargs docker inspect --format ''{{
+    .Id }}: ReadonlyRootfs={{ .HostConfig.ReadonlyRootfs }}'''
+  - 'You should run the following command on the docker host: docker ps --quiet --all | xargs docker inspect
+    --format ''{{ .Id }}: ReadonlyRootfs={{ .HostConfig.ReadonlyRootfs }}'''
+  - 'You should run the following command on the docker host: docker ps --quiet --all | xargs docker inspect
+    --format ''{{ .Id }}: PidMode={{ .HostConfig.PidMode }}'''
+Remediation:
+  name: Remediation
+  requirements:
+  - 'You should manage the CPU runtime between your containers dependent on their priority within your
+    organization. To do so start the container using the --cpu-shares argument. For example, you could
+    run a container as below: docker run -d --cpu-shares 512 centos sleep 1000'
+  - You should add a --read-only flag at a container’s runtime to enforce the container's root filesystem
+    being mounted as read only.
+  - 'If you wish a container to be automatically restarted, a sample command is as below: docker run --detach
+    --restart=on-failure:5 nginx'
+  - You should bind the container port to a specific host interface on the desired host port. For example,
+    49153/tcp:80
+CIS Controls:
+  name: CIS Controls
+  requirements:
+  - 'Controls 1: IG 1 IG 2 IG 3 v8 6.8 Define and Maintain Role-Based Access Control, Implement and Manage
+    a Firewall on Servers'
+  - Establish and maintain the secure configuration of enterprise assets (end-user devices, including
+    portable and mobile; network devices; non-computing/IoT devices; and servers).
+Ensure that the container's root filesystem is mounted as read only (Manual):
+  name: Ensure that the container's root filesystem is mounted as read only (Manual)
+  requirements:
+  - 'You should manage the CPU runtime between your containers dependent on their priority within your
+    organization. To do so start the container using the --cpu-shares argument. For example, you could
+    run a container as below: docker run -d --cpu-shares 512 centos sleep 1000'
+Ensure that the host’s process namespace is not shared (Manual):
+  name: Ensure that the host’s process namespace is not shared (Manual)
+  requirements:
+  - 'You should manage the CPU runtime between your containers dependent on their priority within your
+    organization. To do so start the container using the --cpu-shares argument. For example, you could
+    run a container as below: docker run -d --cpu-shares 512 centos sleep 1000'
+IG 1 IG 2 IG 3:
+  name: IG 1 IG 2 IG 3
+  requirements:
+  - Restrict administrator privileges to dedicated administrator accounts on enterprise assets. Conduct
+    general computing activities, such as internet browsing, email, and productivity suite use, from the
+    user’s primary, non-privileged account.
+  - 'Ensure that container health is checked at runtime (Manual). Profile Applicability: Controls: Version:
+    Control: IG 1 IG 2 IG 3 v8'
+  - Ensure that container health is checked at runtime (Manual).
+Controls:
+  name: Controls
+  requirements:
+  - Ensure that Docker commands always make use of the latest version of their image (Manual).
+Ensure auditing is configured for the Docker daemon:
+  name: Ensure auditing is configured for the Docker daemon
+  requirements:
+  - Configure auditing for the Docker daemon
+Ensure auditing is configured for Docker files and directories - /run/containerd:
+  name: Ensure auditing is configured for Docker files and directories - /run/containerd
+  requirements:
+  - Configure auditing for Docker files and directories - /run/containerd
+Ensure auditing is configured for Docker server certificate file permissions:
+  name: Ensure auditing is configured for Docker server certificate file permissions
+  requirements:
+  - Configure auditing for Docker server certificate file permissions
+Ensure auditing is configured for Docker socket file permissions:
+  name: Ensure auditing is configured for Docker socket file permissions
+  requirements:
+  - Configure auditing for Docker socket file permissions
+Ensure auditing is configured for registry certificate file permissions:
+  name: Ensure auditing is configured for registry certificate file permissions
+  requirements:
+  - Configure auditing for registry certificate file permissions
+Ensure auditing is configured for TLS CA certificate file permissions:
+  name: Ensure auditing is configured for TLS CA certificate file permissions
+  requirements:
+  - Configure auditing for TLS CA certificate file permissions
+Ensure auditing is configured for Docker server certificate key file permissions:
+  name: Ensure auditing is configured for Docker server certificate key file permissions
+  requirements:
+  - Configure auditing for Docker server certificate key file permissions
+Ensure auditing is configured for Docker server certificate file ownership:
+  name: Ensure auditing is configured for Docker server certificate file ownership
+  requirements:
+  - Configure auditing for Docker server certificate file ownership
+Ensure auditing is configured for daemon.json file ownership:
+  name: Ensure auditing is configured for daemon.json file ownership
+  requirements:
+  - Configure auditing for daemon.json file ownership
+Ensure auditing is configured for /etc/default/docker file ownership:
+  name: Ensure auditing is configured for /etc/default/docker file ownership
+  requirements:
+  - Configure auditing for /etc/default/docker file ownership

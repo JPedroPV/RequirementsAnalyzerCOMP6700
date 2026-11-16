@@ -1,0 +1,72 @@
+Docker Socket File:
+  name: Docker Socket File
+  requirements:
+  - Audit docker.socket, if it exists
+  - Set Docker socket file permissions to 660 or more restrictively (Automated)
+CIS Controls:
+  name: CIS Controls
+  requirements:
+  - Controls
+Version:
+  name: Version
+  requirements:
+  - v8
+Docker Daemon:
+  name: Docker Daemon
+  requirements:
+  - Enable user namespace support (Manual)
+  - Ensure that authorization for Docker client commands is enabled (Manual)
+  - Ensure that base device size is not changed until needed (Manual)
+docker.socket File:
+  name: docker.socket File
+  requirements:
+  - set to 644 or more restrictive
+docker.service File:
+  name: docker.service File
+  requirements:
+  - set to 644 or more restrictively
+docker.socket File Permissions:
+  name: docker.socket File Permissions
+  requirements:
+  - 755 or more restrictively
+Daemon.json File:
+  name: Daemon.json File
+  requirements:
+  - Set daemon.json file ownership to root:root, if it is in use.
+Registry Certificate File Permissions:
+  name: Registry Certificate File Permissions
+  requirements:
+  - Set TLS CA certificate file permissions to 400 or more restrictively (Automated)
+Swarm Manager:
+  name: Swarm Manager
+  requirements:
+  - Run the swarm manager in auto-lock mode (--autolock).
+Swarm Networking:
+  name: Swarm Networking
+  requirements:
+  - Bind swarm services to a specific host interface (--listen-addr).
+Swarm Secrets:
+  name: Swarm Secrets
+  requirements:
+  - Ensure that all Docker swarm overlay networks are encrypted (--opt encrypted).
+Docker Swarm:
+  name: Docker Swarm
+  requirements:
+  - Use Docker's secret management commands for managing secrets (--opt secret).
+CIS Benchmark Recommendation:
+  name: CIS Benchmark Recommendation
+  requirements:
+  - Set Correctly
+  - 'Yes'
+  - 'No'
+Set:
+  name: Set
+  requirements:
+  - Correctly
+  - 'Yes'
+  - 'No'
+Ensure:
+  name: Ensure
+  requirements:
+  - Hardened
+  - Not Changed
