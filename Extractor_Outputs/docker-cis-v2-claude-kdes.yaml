@@ -1,0 +1,286 @@
+Container Host:
+  name: Container Host
+  requirements:
+  - The container host must be hardened (e.g. using the CIS Benchmark for the host OS or other applicable
+    security guidelines).
+Docker Version:
+  name: Docker Version
+  requirements:
+  - Monitor Docker releases and keep the Docker version up to date.
+Docker Group:
+  name: Docker Group
+  requirements:
+  - Only trusted users may be members of the docker group, which controls the Docker daemon.
+  - Remove any untrusted users from the docker group.
+  - Do not map sensitive host directories to container volumes.
+Docker Daemon:
+  name: Docker Daemon
+  requirements:
+  - Audit the Docker daemon by adding '-w /usr/bin/dockerd -k docker' to /etc/audit/rules.d/audit.rules,
+    then restart auditd.
+  - Run the Docker daemon as a non-root user, if possible.
+  - Configure TLS authentication for the Docker daemon.
+  - Set the default ulimit appropriately with --default-ulimit (e.g. --default-ulimit nproc=1024:2048).
+  - 'Enable user namespace support: ensure /etc/subuid and /etc/subgid exist and start dockerd with --userns-remap.'
+  - Confirm the default cgroup usage; only set --cgroup-parent for a non-default cgroup.
+  - Enable authorization for Docker client commands with an authorization plugin (--authorization-plugin).
+  - Restrict containers from acquiring new privileges (dockerd --no-new-privileges).
+  - Enable live restore (dockerd --live-restore).
+  - Apply a daemon-wide custom seccomp profile (--seccomp-profile) if the default profile is not adequate.
+  - Do not enable experimental features (--experimental) in production.
+Docker Daemon Networking:
+  name: Docker Daemon Networking
+  requirements:
+  - 'Restrict network traffic between containers on the default bridge ("icc": false or --icc=false),
+    or use custom networks.'
+  - 'Allow Docker to make changes to iptables: do not run dockerd with --iptables=false.'
+  - Disable the userland proxy (dockerd --userland-proxy=false).
+Docker Daemon Logging:
+  name: Docker Daemon Logging
+  requirements:
+  - 'Set the logging level to ''info'' ("log-level": "info" or --log-level="info").'
+  - Configure centralized and remote logging with a log driver (e.g. --log-driver=syslog --log-opt syslog-address=...).
+Storage Driver:
+  name: Storage Driver
+  requirements:
+  - Do not use the aufs storage driver (--storage-driver aufs).
+  - Do not use the devicemapper storage driver (--storage-driver devicemapper).
+  - Do not change the base device size (--storage-opt dm.basesize) until needed.
+Container Registries:
+  name: Container Registries
+  requirements:
+  - Do not use insecure registries.
+/var/lib/docker:
+  name: /var/lib/docker
+  requirements:
+  - Create a separate partition for /var/lib/docker (for existing systems, use LVM).
+  - Audit /var/lib/docker (or the configured data-root) by adding '-a exit,always -F path=/var/lib/docker
+    -F perm=war -k docker' to /etc/audit/rules.d/audit.rules, then restart auditd.
+  - Exclude /var/lib/docker/overlay2 and /var/lib/docker/volumes from the audit rule to reduce audit messages.
+/run/containerd:
+  name: /run/containerd
+  requirements:
+  - Audit /run/containerd by adding '-a exit,always -F path=/run/containerd -F perm=war -k docker' to
+    /etc/audit/rules.d/audit.rules, then restart auditd.
+/etc/docker Directory:
+  name: /etc/docker Directory
+  requirements:
+  - Audit /etc/docker by adding '-w /etc/docker -k docker' to /etc/audit/rules.d/audit.rules, then restart
+    auditd.
+  - Set /etc/docker directory ownership to root:root.
+  - Set /etc/docker directory permissions to 755 or more restrictive.
+docker.service File:
+  name: docker.service File
+  requirements:
+  - Audit docker.service, if it exists, by adding '-w /usr/lib/systemd/system/docker.service -k docker'
+    to /etc/audit/rules.d/audit.rules, then restart auditd.
+  - Set docker.service file ownership to root:root.
+  - Set docker.service file permissions to 644 or more restrictive.
+docker.socket File:
+  name: docker.socket File
+  requirements:
+  - Set docker.socket file ownership to root:root.
+  - Set docker.socket file permissions to 644 or more restrictive.
+Docker Socket File (/var/run/docker.sock):
+  name: Docker Socket File (/var/run/docker.sock)
+  requirements:
+  - Audit docker.sock, if it exists, by adding '-w /var/run/docker.sock -k docker' to /etc/audit/rules.d/audit.rules,
+    then restart auditd.
+  - Set Docker socket file ownership to root:docker.
+  - Set Docker socket file permissions to 660 or more restrictive.
+  - Do not mount docker.sock inside any container.
+Containerd Socket File (/run/containerd/containerd.sock):
+  name: Containerd Socket File (/run/containerd/containerd.sock)
+  requirements:
+  - Audit containerd.sock, if it exists, by adding '-w /run/containerd/containerd.sock -k docker' to /etc/audit/rules.d/audit.rules,
+    then restart auditd.
+  - Set Containerd socket file ownership to root:root.
+  - Set Containerd socket file permissions to 660 or more restrictive.
+daemon.json File:
+  name: daemon.json File
+  requirements:
+  - Audit /etc/docker/daemon.json by adding '-w /etc/docker/daemon.json -k docker' to /etc/audit/audit.rules,
+    then restart auditd.
+  - Set daemon.json file ownership to root:root, if the file is present.
+  - Set daemon.json file permissions to 644 or more restrictive, if the file is present.
+/etc/default/docker File:
+  name: /etc/default/docker File
+  requirements:
+  - Audit /etc/default/docker by adding '-w /etc/default/docker -k docker' to /etc/audit/audit.rules,
+    then restart auditd.
+  - Set /etc/default/docker file ownership to root:root.
+  - Set /etc/default/docker file permissions to 644 or more restrictive.
+/etc/sysconfig/docker File:
+  name: /etc/sysconfig/docker File
+  requirements:
+  - Audit /etc/sysconfig/docker by adding '-w /etc/sysconfig/docker -k docker' to /etc/audit/audit.rules,
+    then restart auditd.
+  - Set /etc/sysconfig/docker file ownership to root:root.
+  - Set /etc/sysconfig/docker file permissions to 644 or more restrictive.
+/etc/containerd/config.toml File:
+  name: /etc/containerd/config.toml File
+  requirements:
+  - Audit /etc/containerd/config.toml by adding '-w /etc/containerd/config.toml -k docker' to /etc/audit/audit.rules,
+    then restart auditd.
+Container Runtime Binaries:
+  name: Container Runtime Binaries
+  requirements:
+  - Audit /usr/bin/containerd by adding '-w /usr/bin/containerd -k docker' to /etc/audit/audit.rules,
+    then restart auditd.
+  - Audit /usr/bin/containerd-shim by adding '-w /usr/bin/containerd-shim -k docker' to /etc/audit/rules.d/audit.rules,
+    then restart auditd.
+  - Audit /usr/bin/containerd-shim-runc-v1 by adding '-w /usr/bin/containerd-shim-runc-v1 -k docker' to
+    /etc/audit/audit.rules, then restart auditd.
+  - Audit /usr/bin/containerd-shim-runc-v2 by adding '-w /usr/bin/containerd-shim-runc-v2 -k docker' to
+    /etc/audit/audit.rules, then restart auditd.
+  - Audit /usr/bin/runc by adding '-w /usr/bin/runc -k docker' to /etc/audit/audit.rules, then restart
+    auditd.
+Registry Certificate Files:
+  name: Registry Certificate Files
+  requirements:
+  - Set registry certificate file (/etc/docker/certs.d/<registry-name>/*) ownership to root:root.
+  - Set registry certificate file permissions to 444 or more restrictive.
+TLS CA Certificate File:
+  name: TLS CA Certificate File
+  requirements:
+  - Set TLS CA certificate file ownership to root:root.
+  - Set TLS CA certificate file permissions to 444 or more restrictive.
+Docker Server Certificate File:
+  name: Docker Server Certificate File
+  requirements:
+  - Set Docker server certificate file ownership to root:root.
+  - Set Docker server certificate file permissions to 444 or more restrictive.
+Docker Server Certificate Key File:
+  name: Docker Server Certificate Key File
+  requirements:
+  - Set Docker server certificate key file ownership to root:root.
+  - Set Docker server certificate key file permissions to 400.
+Container Image:
+  name: Container Image
+  requirements:
+  - Use only trusted base images (use Content trust, review image history, scan regularly).
+  - Do not install unnecessary packages; prefer a minimal base image.
+  - Scan images and rebuild them with the latest base images to include security patches, then restart
+    containers with the updated images.
+  - Install only verified packages using a secure package distribution mechanism.
+  - Validate all signed artifacts against their signatures, preferably automatically.
+  - Use version pinning so Docker commands use the latest version of their image instead of cached older
+    versions.
+  - 'Avoid image sprawl: keep only needed images and remove old or stale ones.'
+Dockerfile:
+  name: Dockerfile
+  requirements:
+  - Create a user for the container and set it with the USER instruction.
+  - Add HEALTHCHECK instructions to container images.
+  - Do not use update instructions alone; combine them with install instructions and version pinning,
+    or build with --no-cache.
+  - Remove setuid and setgid permissions from executables that do not need them.
+  - Use COPY instead of ADD.
+  - Do not store secrets in Dockerfiles; use a secrets management tool such as BuildKit.
+  - Expose only needed ports.
+Docker Content Trust:
+  name: Docker Content Trust
+  requirements:
+  - Enable Content trust for Docker (export DOCKER_CONTENT_TRUST=1).
+Swarm Mode:
+  name: Swarm Mode
+  requirements:
+  - Do not enable swarm mode if it is not needed (docker swarm leave).
+Container Security Options:
+  name: Container Security Options
+  requirements:
+  - Enable an AppArmor profile for containers, if applicable (--security-opt="apparmor:PROFILENAME").
+  - Set SELinux security options, if applicable (--selinux-enabled and --security-opt label=...).
+  - Do not disable the default seccomp profile.
+  - Restrict containers from acquiring additional privileges (--security-opt=no-new-privileges).
+Linux Kernel Capabilities:
+  name: Linux Kernel Capabilities
+  requirements:
+  - Restrict Linux kernel capabilities within containers (--cap-drop / --cap-add, e.g. --cap-drop=all
+    then add only needed ones).
+Privileged Containers:
+  name: Privileged Containers
+  requirements:
+  - Do not run containers with the --privileged flag.
+docker exec Commands:
+  name: docker exec Commands
+  requirements:
+  - Do not use docker exec with the --privileged option.
+  - Do not use docker exec with the --user=root option.
+Container Volume Mounts:
+  name: Container Volume Mounts
+  requirements:
+  - Do not mount sensitive host system directories (/, /boot, /dev, /etc, /lib, /lib64, /proc, /sys, /usr)
+    on containers, especially in read-write mode.
+  - Do not set mount propagation mode to shared.
+Container Root Filesystem:
+  name: Container Root Filesystem
+  requirements:
+  - Mount the container's root filesystem as read only (--read-only).
+SSH Daemon:
+  name: SSH Daemon
+  requirements:
+  - Do not run sshd within containers; use docker exec or docker attach instead.
+Container Ports:
+  name: Container Ports
+  requirements:
+  - Do not map privileged host ports within containers.
+  - Open only needed ports; do not use -P / --publish-all, define ports with -p.
+  - Bind incoming container traffic to a specific host interface.
+Host Namespaces:
+  name: Host Namespaces
+  requirements:
+  - Do not share the host's network namespace (--net=host).
+  - Do not share the host's process namespace (--pid=host).
+  - Do not share the host's IPC namespace (--ipc=host).
+  - Do not share the host's UTS namespace (--uts=host).
+  - Do not share the host's user namespaces (--userns=host).
+Container Resources:
+  name: Container Resources
+  requirements:
+  - Limit container memory usage (--memory).
+  - Set CPU priority appropriately (--cpu-shares).
+  - Use the PIDs cgroup limit (--pids-limit).
+  - Override the default ulimit at runtime only if needed (--ulimit).
+  - 'Confirm cgroup usage: do not use --cgroup-parent in docker run unless strictly required.'
+Container Restart Policy:
+  name: Container Restart Policy
+  requirements:
+  - Set the 'on-failure' container restart policy to 5 (--restart=on-failure:5).
+Host Devices:
+  name: Host Devices
+  requirements:
+  - Do not directly expose host devices to containers; if needed, use granular permissions.
+Container Health:
+  name: Container Health
+  requirements:
+  - Check container health at runtime (--health-cmd).
+Default Bridge (docker0):
+  name: Default Bridge (docker0)
+  requirements:
+  - Do not use the default docker0 bridge; run containers on a user-defined network.
+Container Sprawl:
+  name: Container Sprawl
+  requirements:
+  - 'Avoid container sprawl: periodically remove containers not in active use (docker container prune).'
+Swarm Manager:
+  name: Swarm Manager
+  requirements:
+  - Create only the minimum number of manager nodes in a swarm.
+  - Run the swarm manager in auto-lock mode (--autolock).
+  - Rotate the swarm manager auto-lock key periodically (docker swarm unlock-key --rotate).
+Swarm Networking:
+  name: Swarm Networking
+  requirements:
+  - Bind swarm services to a specific host interface (--listen-addr).
+  - Encrypt all Docker swarm overlay networks (--opt encrypted).
+  - Separate management plane traffic from data plane traffic (--advertise-addr and --data-path-addr).
+Swarm Secrets:
+  name: Swarm Secrets
+  requirements:
+  - Use Docker's secret management commands to manage secrets in a swarm cluster.
+Swarm Certificates:
+  name: Swarm Certificates
+  requirements:
+  - Rotate node certificates as appropriate (--cert-expiry).
+  - Rotate CA certificates as appropriate (docker swarm ca --rotate).
