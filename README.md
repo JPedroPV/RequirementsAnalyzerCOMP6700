@@ -8,7 +8,7 @@
 
 # Usage
 
-## Pip
+## Venv
 
 To install our packages with pip, we recommend installing and running from a python  virtual environment
 
