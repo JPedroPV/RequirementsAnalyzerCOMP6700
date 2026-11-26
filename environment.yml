@@ -1,0 +1,16 @@
+name: requirements-analyzer
+channels:
+  - conda-forge
+  - pytorch
+dependencies:
+  - python=3.11
+  - pyyaml
+  - pymupdf
+  - langchain-text-splitters
+  - pypdf
+  - pytorch
+  - transformers
+  - pip
+  - pip:
+      - llama-cpp-python
+      - huggingface-hub

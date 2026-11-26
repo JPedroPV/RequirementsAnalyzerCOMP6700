@@ -1,0 +1,8 @@
+PyYAML
+PyMuPDF
+langchain-text-splitters
+pypdf
+torch
+transformers
+llama-cpp-python
+huggingface-hub
