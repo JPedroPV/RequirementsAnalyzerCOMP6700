@@ -5,3 +5,5 @@ Requirements only in ./Extractor_Outputs/test_v0_v1_diff.yaml:
 Requirements only in ./Extractor_Outputs/test_v1_v2_diff.yaml:
 - Element One,req20
 - Element Two,req60
+- healthcheck
+- ,root

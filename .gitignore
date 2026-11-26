@@ -2,3 +2,6 @@
 .vscode
 .DS_Store
 __pycache__
+extracted_dockerfiles/
+dockerfiles.zip
+Executor_Outputs/test_v0_v1_executor_data.csv
