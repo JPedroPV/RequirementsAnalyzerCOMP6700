@@ -8,6 +8,7 @@ dependencies:
   - pymupdf
   - langchain-text-splitters
   - pypdf
+  - pytest
   - pytorch
   - transformers
   - pip
