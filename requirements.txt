@@ -7,3 +7,8 @@ torch
 transformers
 llama-cpp-python
 huggingface-hub
+numpy
+pandas
+pyarrow
+python-dateutil
+tzdata

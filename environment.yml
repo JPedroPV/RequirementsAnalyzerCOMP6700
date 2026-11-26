@@ -11,6 +11,11 @@ dependencies:
   - pytest
   - pytorch
   - transformers
+  - numpy
+  - pandas
+  - pyarrow
+  - python-dateutil
+  - tzdata
   - pip
   - pip:
       - llama-cpp-python

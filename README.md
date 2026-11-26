@@ -3,7 +3,7 @@
 | Name              | BannerID  | Email              |
 | ----------------- | --------- | ------------------ |
 | Joe Lin           | wha       | jzl0277@auburn.edu |
-| Jeremy Wang       |           | jdw0134@auburn.edu |
+| Jeremy Wang       | 904202081 | jdw0134@auburn.edu |
 | Pedro Vasconcelos | 904197253 | jpv0016@auburn.edu |
 
 # Usage
